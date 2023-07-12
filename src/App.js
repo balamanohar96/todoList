@@ -3,20 +3,17 @@ import "./App.css";
 
 const App = () => {
   const [courseGoals, setCourseGoals] = useState([
-    { text: "Do all exercises!", id: "g1" },
-    { text: "Finish the course!", id: "g2" },
+    { text: "Do all exercises", id: "g1" },
+    { text: "Finish the course", id: "g2" },
   ]);
   const [enteredValue, setEnteredValue] = useState("");
 
   const addGoalHandler = (enteredText) => {
-    setCourseGoals((prevGoals) => {
-      const updatedGoals = [...prevGoals];
-      if (enteredText.trim() === "") {
-        return updatedGoals;
-      }
+    const updatedGoals = [...courseGoals];
+    if (enteredText.trim() !== "") {
       updatedGoals.push({ text: enteredText, id: Math.random().toString() });
-      return updatedGoals;
-    });
+      setCourseGoals(updatedGoals);
+    }
   };
 
   const deleteItemHandler = (goalId) => {
@@ -48,7 +45,7 @@ const App = () => {
             onClick={() => deleteItemHandler(goal.id)}
             key={goal.id}
           >
-            {goal.text}
+            {goal.text} , {goal.id}
           </li>
         ))}
       </ul>
