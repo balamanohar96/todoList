@@ -45,7 +45,7 @@ const App = () => {
             onClick={() => deleteItemHandler(goal.id)}
             key={goal.id}
           >
-            {goal.text} , {goal.id}
+            {goal.text}
           </li>
         ))}
       </ul>
