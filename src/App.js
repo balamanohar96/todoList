@@ -1,25 +1,80 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [courseGoals, setCourseGoals] = useState([
+    { text: "Do all exercises!", id: "g1" },
+    { text: "Finish the course!", id: "g2" },
+  ]);
+  const [enteredValue, setEnteredValue] = useState("");
+
+  const addGoalHandler = (enteredText) => {
+    setCourseGoals((prevGoals) => {
+      const updatedGoals = [...prevGoals];
+      if (enteredText.trim() === "") {
+        return updatedGoals;
+      }
+      updatedGoals.push({ text: enteredText, id: Math.random().toString() });
+      return updatedGoals;
+    });
+  };
+
+  const deleteItemHandler = (goalId) => {
+    setCourseGoals((prevGoals) => {
+      const updatedGoals = prevGoals.filter((goal) => goal.id !== goalId);
+      return updatedGoals;
+    });
+  };
+
+  const goalInputChangeHandler = (event) => {
+    setEnteredValue(event.target.value);
+  };
+
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    addGoalHandler(enteredValue);
+    setEnteredValue("");
+  };
+
+  let content;
+  if (courseGoals.length === 0) {
+    content = <p>No goals found.</p>;
+  } else {
+    content = (
+      <ul className="goal-list">
+        {courseGoals.map((goal) => (
+          <li
+            className="goal-item"
+            onClick={() => deleteItemHandler(goal.id)}
+            key={goal.id}
+          >
+            {goal.text}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <section id="goal-form">
+        <form onSubmit={formSubmitHandler}>
+          <div className="form-control">
+            <label>Course Goal</label>
+            <input
+              type="text"
+              onChange={goalInputChangeHandler}
+              value={enteredValue}
+            />
+          </div>
+          <button type="submit" className="button">
+            Add Goal
+          </button>
+        </form>
+      </section>
+      <section id="goals">{content}</section>
     </div>
   );
-}
+};
 
 export default App;
